@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mrs.Yousra-Fiala</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <div class="breathing-bubble">
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                </div>
+                <span>استاذة يسرا</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" data-page="dashboard" class="active">
+                    <span class="icon">🏠</span>
+                    <span>الرئيسية</span>
+                </a></li>
+                <li><a href="#" data-page="articles">
+                    <span class="icon">📚</span>
+                    <span>مقالاتي</span>
+                </a></li>
+                <li><a href="#" data-page="tracker">
+                    <span class="icon">📊</span>
+                    <span>تتبع الألم</span>
+                </a></li>
+            </ul>
+            <button class="dark-toggle" id="darkToggle" aria-label="تبديل الوضع الداكن">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </nav>
+
+        <main class="content">
+            <section id="dashboard" class="page active">
+                <header class="page-header">
+                    <h1>مرحبا استاذة يسرا</h1>
+                    <p class="supportive-text">كل يوم جديد هو خطوة نحو الأفضل</p>
+                </header>
+                
+                <div class="breathing-section">
+                    <div class="breathing-circle" id="breathingCircle">
+                        <div class="inner-circle"></div>
+                    </div>
+                    <p class="breathing-instruction" id="breathingText">اضغطي على الدائرة و شدي نفسك</p>
+                    <button class="breathe-btn" id="breatheBtn">ابدأي التمرين</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-icon">💙</span>
+                        <div class="stat-info">
+                            <span class="stat-label">متوسط الألم</span>
+                            <span class="stat-value" id="todayAvg">-</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">📅</span>
+                        <div class="stat-info">
+                            <span class="stat-label">سجّلتي اليوم</span>
+                            <span class="stat-value" id="todayLogged">لا</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">🌸</span>
+                        <div class="stat-info">
+                            <span class="stat-label">أيام خالية من الألم</span>
+                            <span class="stat-value" id="painFreeDays">٠</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quote-card">
+                    <p>"أنتِ أقوى مما تتصورين. كل يوم يحمل بداخله إمكانية جديدة للشفاء."</p>
+                </div>
+            </section>
+
+            <section id="articles" class="page">
+                <header class="page-header">
+                    <h1>مقالات مفيدة</h1>
+                    <p class="supportive-text">معلومات ونصائح للراحة</p>
+                </header>
+
+                <div class="articles-grid">
+                    <article class="article-card">
+                        <div class="article-icon">🧘‍♀️</div>
+                        <h3>تمارين الاسترخاء</h3>
+                        <p>تمارين بسيطة للتخفيف من التوتر العضلي وتحسين النوم</p>
+                        <div class="article-content">
+                            <p>١. تمارين التنفس العميق:اجلسي براحة، تنفسي بعمق ٤ ثوانٍ، احبسي ٤ ثوانٍ، ازفري ٤ ثوانٍ</p>
+                            <p>٢. تمدد خفيف: حركات تمدد لطيفة لمدة ٥ دقائق</p>
+                            <p>٣. التأمل الموجّه: استمعي لموسيقى هادئة لمدة ١٠ دقائق</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-icon">🍵</div>
+                        <h3>العناية بالنفس</h3>
+                        <p>خطوات بسيطة للعناية اليومية بصحة جسمك ونفسك</p>
+                        <div class="article-content">
+                            <p>١. شرب الماء بكميات كافية</p>
+                            <p>٢. الحصول على قسط كافٍ من الراحة</p>
+                            <p>٣. تجنب الإجهاد الزائد</p>
+                            <p>٤. الحفاظ على دفء الجسم</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-icon">📝</div>
+                        <h3>إدارة الألم</h3>
+                        <p>استراتيجيات عملية لتعزيز الراحة خلال اليوم</p>
+                        <div class="article-content">
+                            <p>١. استخدام كمادات دافئة أو باردة</p>
+                            <p>٢. تدليك المناطق المؤلمة بلطف</p>
+                            <p>٣. تنظيم جدول الراحة والنشاط</p>
+                            <p>٤. تدوين مستوى الألم يومياً</p>
+                        </div>
+                    </article>
+
+                    <article class="article-card">
+                        <div class="article-icon">💤</div>
+                        <h3>نصائح للنوم</h3>
+                        <p>كيف تحصلين على راحة أفضل ليلاً</p>
+                        <div class="article-content">
+                            <p>١. حافظي على موعد ثابت للنوم</p>
+                            <p>٢. تجنبي الشاشات قبل النوم</p>
+                            <p>٣. أطفئي الأنوار في غرفتك</p>
+                            <p>٤. استخدمي وسادة مريحة</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="tracker" class="page">
+                <header class="page-header">
+                    <h1>تتبع الألم</h1>
+                    <p class="supportive-text">سجّلي مستوى الألم للمساعدة في فهم نمطه</p>
+                </header>
+
+                <div class="tracker-form">
+                    <div class="date-display">
+                        <span id="currentDate"></span>
+                    </div>
+                    
+                    <div class="pain-slider-container">
+                        <label for="painLevel">مستوى الألم</label>
+                        <div class="pain-scale">
+                            <span>١</span><span>٢</span><span>٣</span><span>٤</span><span>٥</span>
+                            <span>٦</span><span>٧</span><span>٨</span><span>٩</span><span>١٠</span>
+                        </div>
+                        <input type="range" id="painLevel" min="1" max="10" value="5">
+                        <div class="pain-value">
+                            <span id="painValue">٥</span>
+                            <span id="painEmoji">😊</span>
+                        </div>
+                    </div>
+
+                    <div class="notes-container">
+                        <label for="painNotes">ملاحظات (اختياري)</label>
+                        <textarea id="painNotes" placeholder="كيف تشعرين اليوم؟"></textarea>
+                    </div>
+
+                    <button class="save-btn" id="savePain">💾 حفظ السجل</button>
+                </div>
+
+                <div class="history-section">
+                    <h2>سجل الألم</h2>
+                    <div class="history-list" id="historyList">
+                        <p class="empty-state">لا توجد سجلات سابقة</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script src="app.js"></script>
+</body>
+</html>
