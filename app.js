@@ -49,11 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 1. الوضع الداكن
 function initDarkMode() {
-    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
-    darkToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
+document.body.classList.add('dark');
 }
 
 // 2. التنقل بين الصفحات (شغال 100%)

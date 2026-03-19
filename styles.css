@@ -446,12 +446,11 @@ body:not(.dark) .moon { display: none; }
     border-radius: 6px;
     background: linear-gradient(to left, var(--accent), var(--secondary));
     outline: none;
-    -webkit-appearance: none;
     cursor: pointer;
 }
 
 #painLevel::-webkit-slider-thumb {
-    -webkit-appearance: none;
+    appearance: none;
     width: 32px;
     height: 32px;
     border-radius: 50%;
