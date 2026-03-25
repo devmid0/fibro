@@ -12,10 +12,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// --- العناصر من الـ HTML بتاعك ---
+// --- العناصر من الـ HTML ---
 const navLinks = document.querySelectorAll('.nav-links a');
 const pages = document.querySelectorAll('.page');
-const darkToggle = document.getElementById('darkToggle');
 const breatheBtn = document.getElementById('breatheBtn');
 const breathingCircle = document.getElementById('breathingCircle');
 const breathingText = document.getElementById('breathingText');
@@ -49,19 +48,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 1. الوضع الداكن
 function initDarkMode() {
-document.body.classList.add('dark');
+    document.body.classList.add('dark');
 }
 
-// 2. التنقل بين الصفحات (شغال 100%)
+// 2. التنقل بين الصفحات
 function initNavigation() {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const target = link.getAttribute('data-page');
+            const targetPage = document.getElementById(target);
+            if (!targetPage) return;
             navLinks.forEach(l => l.classList.remove('active'));
             link.classList.add('active');
             pages.forEach(p => p.classList.remove('active'));
-            document.getElementById(target).classList.add('active');
+            targetPage.classList.add('active');
             window.location.hash = target;
         });
     });
@@ -74,50 +75,63 @@ let breathingInterval = null;
 function toggleBreathing() {
     if (isBreathing) {
         isBreathing = false;
-        breatheBtn.textContent = 'ابدأي التمرين';
-        breathingCircle.classList.remove('active');
-        breathingText.textContent = 'اضغطي على الدائرة وتنفسي بعمق';
+        if (breatheBtn) breatheBtn.textContent = 'ابدأي التمرين';
+        if (breathingCircle) breathingCircle.classList.remove('active');
+        if (breathingText) breathingText.textContent = 'اضغطي على الدائرة وتنفسي بعمق';
         clearTimeout(breathingInterval);
     } else {
         isBreathing = true;
-        breatheBtn.textContent = 'توقف';
-        breathingCircle.classList.add('active');
+        if (breatheBtn) breatheBtn.textContent = 'توقف';
+        if (breathingCircle) breathingCircle.classList.add('active');
         let phase = 0;
-        const phases = [{t:'شدي نفسك كويس...', d:4000}, {t:'احبسي النفس...', d:4000}, {t:'زفير ببطئ...', d:4000}, {t:'ريحي شويه...', d:4000}];
+        const phases = [
+            {t:'شدي نفسك كويس...', d:4000}, 
+            {t:'احبسي النفس...', d:4000}, 
+            {t:'زفير ببطئ...', d:4000}, 
+            {t:'ريحي شويه...', d:4000}
+        ];
         const run = () => {
             if (!isBreathing) return;
-            breathingText.textContent = phases[phase].t;
-            breathingInterval = setTimeout(() => { phase = (phase + 1) % 4; run(); }, phases[phase].d);
+            if (breathingText) breathingText.textContent = phases[phase].t;
+            breathingInterval = setTimeout(() => { 
+                phase = (phase + 1) % 4; 
+                run(); 
+            }, phases[phase].d);
         };
         run();
     }
 }
 
 function initBreathing() {
-    breatheBtn.addEventListener('click', toggleBreathing);
-    breathingCircle.addEventListener('click', toggleBreathing);
+    if (breatheBtn) breatheBtn.addEventListener('click', toggleBreathing);
+    if (breathingCircle) breathingCircle.addEventListener('click', toggleBreathing);
 }
 
 // 4. تتبع الألم و Firebase
 function initPainTracker() {
-    painLevel.addEventListener('input', () => {
-        const val = parseInt(painLevel.value);
-        painValue.textContent = arabicNums[val];
-        painEmoji.textContent = painEmojis[val - 1] || '😌';
-    });
+    if (painLevel) {
+        painLevel.addEventListener('input', () => {
+            const val = parseInt(painLevel.value);
+            if (painValue) painValue.textContent = arabicNums[val];
+            if (painEmoji) painEmoji.textContent = painEmojis[val - 1] || '😌';
+        });
+    }
 
-    savePainBtn.addEventListener('click', () => {
-        const entry = {
-            date: new Date().toISOString(),
-            pain: parseInt(painLevel.value),
-            notes: painNotes.value.trim()
-        };
-        db.collection("painHistory").add(entry).then(() => {
-            painNotes.value = '';
-            showToast('تم حفظ السجل بنجاح 💙');
-            loadHistory();
-        }).catch(() => showToast('خطأ في الاتصال'));
-    });
+    if (savePainBtn) {
+        savePainBtn.addEventListener('click', () => {
+            if (!painLevel || !painNotes) return;
+            const entry = {
+                date: new Date().toISOString(),
+                pain: parseInt(painLevel.value),
+                notes: painNotes.value.trim()
+            };
+            db.collection("painHistory").add(entry).then(() => {
+                painNotes.value = '';
+                showToast('تم حفظ السجل بنجاح 💙');
+                loadHistory();
+            }).catch(() => showToast('خطأ في الاتصال'));
+        });
+    }
 
     loadHistory();
 }
@@ -128,25 +142,27 @@ function loadHistory() {
         snap.forEach(d => history.push({id: d.id, ...d.data()}));
         updateDashboard(history);
         
-        if (history.length === 0) {
-            historyList.innerHTML = '<p class="empty-state">لا توجد سجلات سابقة</p>';
-            return;
+        if (historyList) {
+            if (history.length === 0) {
+                historyList.innerHTML = '<p class="empty-state">لا توجد سجلات سابقة</p>';
+                return;
+            }
+            
+            historyList.innerHTML = history.map(e => {
+                const d = new Date(e.date);
+                return `
+                    <div class="history-item">
+                        <div class="history-item-info">
+                            <span class="history-date">${dayNames[d.getDay()]}، ${d.getDate()} ${monthNames[d.getMonth()]}</span>
+                            <span class="history-note">${e.notes || ''}</span>
+                        </div>
+                        <div class="history-pain">
+                            <span class="history-pain-value">${arabicNums[e.pain]} ${painEmojis[e.pain-1]}</span>
+                            <button class="delete-btn" onclick="deleteEntry('${e.id}')">✕</button>
+                        </div>
+                    </div>`;
+            }).join('');
         }
-        
-        historyList.innerHTML = history.map(e => {
-            const d = new Date(e.date);
-            return `
-                <div class="history-item">
-                    <div class="history-item-info">
-                        <span class="history-date">${dayNames[d.getDay()]}، ${d.getDate()} ${monthNames[d.getMonth()]}</span>
-                        <span class="history-note">${e.notes || ''}</span>
-                    </div>
-                    <div class="history-pain">
-                        <span class="history-pain-value">${arabicNums[e.pain]} ${painEmojis[e.pain-1]}</span>
-                        <button class="delete-btn" onclick="deleteEntry('${e.id}')">✕</button>
-                    </div>
-                </div>`;
-        }).join('');
     });
 }
 
@@ -160,17 +176,25 @@ window.deleteEntry = function(id) {
 function updateDashboard(history) {
     const today = new Date().toDateString();
     const tEntries = history.filter(e => new Date(e.date).toDateString() === today);
-    document.getElementById('todayLogged').textContent = tEntries.length > 0 ? 'نعم ✓' : 'لا';
+    const todayLoggedEl = document.getElementById('todayLogged');
+    const todayAvgEl = document.getElementById('todayAvg');
+    
+    if (todayLoggedEl) todayLoggedEl.textContent = tEntries.length > 0 ? 'نعم ✓' : 'لا';
     const avg = tEntries.length > 0 ? Math.round(tEntries.reduce((s, e) => s + e.pain, 0) / tEntries.length) : 0;
-    document.getElementById('todayAvg').textContent = avg > 0 ? arabicNums[avg] : '-';
+    if (todayAvgEl) todayAvgEl.textContent = avg > 0 ? arabicNums[avg] : '-';
 }
 
 function setCurrentDate() {
-    const n = new Date();
-    currentDateEl.textContent = `${dayNames[n.getDay()]}، ${n.getDate()} ${monthNames[n.getMonth()]} ${n.getFullYear()}`;
+    if (currentDateEl) {
+        const n = new Date();
+        currentDateEl.textContent = `${dayNames[n.getDay()]}، ${n.getDate()} ${monthNames[n.getMonth()]} ${n.getFullYear()}`;
+    }
 }
 
 function showToast(m) {
-    toast.textContent = m; toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
+    if (toast) {
+        toast.textContent = m;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
 }
